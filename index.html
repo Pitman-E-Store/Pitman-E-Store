@@ -103,7 +103,7 @@ function renderProducts(){
  const items=allProducts.filter(p=>currentCategory==="All"||p.category===currentCategory);
  if(!items.length){grid.innerHTML='<div class="empty">No products are listed in this category yet. Contact the store for current availability.</div>';return;}
  grid.innerHTML=items.map(p=>{
-  const image=p.image||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
+ const image=p.image_url||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
   const sold=Boolean(p.is_sold);
   const enquiry="https://wa.me/"+STORE_WHATSAPP+"?text="+encodeURIComponent("Hello, I am enquiring about "+p.name);
   return `<article class="product"><div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div><div class="product-body"><span class="tag">${escapeHtml(p.condition||"Device")} · ${escapeHtml(p.category||"")}</span><h3>${escapeHtml(p.name)}</h3><div class="spec">${escapeHtml(p.description||"")}</div><div class="price-row"><span class="price">${money(p.price)}</span>${sold?'<span class="sold">SOLD</span>':''}</div><a class="btn ${sold?'light':''}" ${sold?'aria-disabled="true" tabindex="-1"':`href="${enquiry}" target="_blank" rel="noopener"`}>${sold?"Currently sold":"Enquire on WhatsApp ↗️"}</a></div></article>`;
