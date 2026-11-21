@@ -1,0 +1,77 @@
+PITMAN E-STORE — START HERE
+============================
+
+You have received a starter website with:
+- index.html: the public website customers see
+- admin.html: private product management page
+- schema.sql: database and access rules
+- This guide: beginner setup instructions
+
+IMPORTANT
+---------
+The website design and admin panel code are prepared, but the online product database is NOT connected yet. You must complete the setup below before product editing works. Do not publish real customer or owner passwords in code.
+
+STEP 1 — Get the project onto your laptop
+1. Download and unzip pitman-e-store-starter.zip.
+2. Open the unzipped folder.
+3. You should see index.html, admin.html and schema.sql.
+
+STEP 2 — Create the online database
+1. Open https://supabase.com/ in your browser.
+2. Create an account and a new project. Use an email controlled by the shop owner if possible.
+3. Choose a strong database password and keep it private.
+4. Wait for the project to finish setting up.
+5. In the left menu, open SQL Editor, choose New query.
+6. First open schema.sql in a text editor. Replace BOTH occurrences of owner@example.com with the exact shop-owner email address you plan to create in Supabase Authentication. Save the file.
+7. Copy all the updated schema.sql contents, paste into the SQL Editor and click Run.
+8. In Supabase, open Project Settings -> API (or Data API / API Keys, depending on the dashboard layout).
+9. Copy the Project URL and the anon/public key. NEVER use a service_role or secret key in website code.
+
+STEP 3 — Connect both website pages
+1. Open index.html in a text editor (Notepad is okay; VS Code is better).
+2. Find PASTE_YOUR_SUPABASE_PROJECT_URL and replace the text inside the quotes with your Project URL.
+3. Find PASTE_YOUR_SUPABASE_ANON_PUBLIC_KEY and replace the text inside the quotes with your anon/public key.
+4. Find STORE_WHATSAPP and replace 91XXXXXXXXXX with the shop WhatsApp number, digits only, including country code 91. Example format: 919876543210 (use the real shop number).
+5. Replace STORE_PHONE and STORE_ADDRESS with the correct store contact details.
+6. Save the file.
+7. Open admin.html and paste the SAME Project URL and SAME anon/public key in its two settings.
+8. Save the file.
+
+STEP 4 — Create the owner's login
+1. In Supabase, open Authentication -> Users.
+2. Choose Add user / Create new user.
+3. Enter the shop owner's email and a strong temporary password. Confirm the user if the dashboard asks.
+4. Give the owner the login details privately and ask them to change/secure their password.
+5. In Supabase Authentication settings, turn off public user sign-ups if the shop only needs this one owner account. The database policies also restrict product changes and image uploads to the exact owner email you entered in schema.sql.
+6. Do not give anyone your Supabase account password or a service_role key.
+
+STEP 5 — Test on your laptop
+1. Open index.html in Chrome. The product list will be empty at first.
+2. Open admin.html in Chrome.
+3. Sign in with the owner email and password.
+4. Add a test product with a test price and a photo.
+5. Open index.html again and refresh. The test product should appear.
+6. Try editing its price, changing its photo, and marking it sold.
+7. Delete the test product when you finish testing.
+
+STEP 6 — Publish it online
+For a beginner-friendly static hosting route, you can use Netlify:
+1. Create an account at https://www.netlify.com/ using an email controlled by the shop owner.
+2. In Netlify, choose Add new site / Deploy manually (the wording may vary).
+3. Drag the folder containing index.html and admin.html into the upload area. Keep both files in the same folder.
+4. Netlify gives you a temporary website address. Test both the homepage and /admin.html.
+5. Later, the shop owner can buy/register a domain and connect it in Netlify's domain settings. Domain registration and hosting may have charges.
+
+IMPORTANT SECURITY NOTE
+-----------------------
+This starter uses Supabase Auth and database Row Level Security. The anon/public key is designed to be used in browser code; it is not a secret. Never paste a service_role key or database password into either HTML file. Product edits and photo uploads are restricted to the owner email entered in schema.sql. Turn off public sign-ups if no other admins are needed, and test access from a signed-out browser before launch.
+
+WHAT IS NOT YET CONFIGURED
+--------------------------
+- Real shop phone, WhatsApp number and address (placeholders are in index.html).
+- Real product inventory and product photos.
+- Owner's Supabase account and credentials.
+- Custom domain.
+- Any payment checkout. This first version sends enquiries to WhatsApp; it does not take online payments.
+
+If you get stuck, tell ChatGPT the exact step number and send a screenshot of what you see. Never send passwords, secret keys or private login codes.

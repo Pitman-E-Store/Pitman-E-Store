@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pitman E-Store | Admin</title>
+  <style>
+    :root{--navy:#101b35;--blue:#2855d9;--ink:#172033;--muted:#68738a;--line:#e5eaf2;--bg:#f5f7fb}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}
+    .wrap{width:min(960px,92%);margin:35px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+    .brand{font-size:21px;font-weight:850;color:var(--navy)}
+    .brand span{color:var(--blue)}
+    .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:23px;margin-bottom:18px}
+    .hidden{display:none!important}
+    h1{font-size:27px;margin:0 0 8px}
+    h2{font-size:19px;margin:0 0 16px}
+    .muted{color:var(--muted);font-size:14px;line-height:1.6}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d8dfeb;border-radius:9px;font:inherit;background:#fff}
+    textarea{min-height:85px;resize:vertical}
+    .field{margin-bottom:13px}
+    .btn{border:0;border-radius:9px;background:var(--blue);color:#fff;padding:11px 15px;font-weight:750;cursor:pointer}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn.gray{background:#eaf0ff;color:var(--blue)}
+    .btn.red{background:#fff0ef;color:#b23b31}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .msg{margin-top:12px;font-size:13px;color:var(--muted);white-space:pre-wrap}
+    .item{display:flex;align-items:center;gap:13px;border-top:1px solid var(--line);padding:13px 0}
+    .item img{width:65px;height:55px;object-fit:cover;border-radius:8px;background:#edf1f8}
+    .item-info{flex:1;min-width:0}
+    .item-info strong{display:block}
+    .item-info small{color:var(--muted)}
+    @media(max-width:620px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.card{padding:17px}.item{align-items:flex-start;flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">PITMAN <span>E-STORE</span> <small style="font-size:12px;color:#68738a"> / Admin</small></div>
+    <a href="index.html" class="muted">← View website</a>
+  </div>
+
+  <section class="card" id="loginBox">
+    <h1>Store admin login</h1>
+    <p class="muted">Sign in with the owner account created in Supabase Authentication.</p>
+    <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" placeholder="owner@example.com"></div>
+    <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Your password"></div>
+    <button class="btn" id="loginBtn" type="button">Sign in</button>
+    <div class="msg" id="loginMsg"></div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="card">
+      <div class="top">
+        <div><h1>Product management</h1><p class="muted">Add products or update their photos, prices and availability.</p></div>
+        <button class="btn gray" id="logoutBtn" type="button">Sign out</button>
+      </div>
+      <h2 id="formTitle">Add a product</h2>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="grid">
+          <div class="field"><label for="name">Product name *</label><input id="name" required placeholder="e.g. HP EliteBook 840"></div>
+          <div class="field"><label for="category">Category *</label><select id="category"><option>Laptop</option><option>Tablet</option><option>Computer</option></select></div>
+          <div class="field"><label for="condition">Condition</label><select id="condition"><option>New</option><option>Pre-owned</option></select></div>
+          <div class="field"><label for="price">Price in INR (₹) *</label><input id="price" type="number" min="0" step="1" required placeholder="25000"></div>
+        </div>
+        <div class="field"><label for="description">Specifications / description</label><textarea id="description" placeholder="Processor, RAM, storage, condition, warranty details..."></textarea></div>
+        <div class="field"><label for="photo">Product photo</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><p class="muted">Choose a JPG, PNG or WebP image. Maximum size: 5 MB.</p></div>
+        <div class="field"><label><input id="isSold" type="checkbox" style="width:auto"> Mark as sold</label></div>
+        <div class="actions"><button class="btn" id="saveBtn" type="submit">Save product</button><button class="btn gray" id="clearBtn" type="button">Clear form</button></div>
+        <div class="msg" id="formMsg"></div>
+      </form>
+    </div>
+    <div class="card"><h2>Products on your website</h2><div id="productList" class="muted">Loading products...</div></div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // STEP: Replace only the two placeholder values below with your Supabase Project URL
+  // and your sb_publishable_... key. Do NOT use an sb_secret_... key here.
+  const SUPABASE_URL = "https://nmslkdgmlifmvmhxhkyc.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_81WkoDIWyuF8_p1LDmyOiQ_MmgnM3kN";
+
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const $ = id => document.getElementById(id);
+
+  function message(id, text) { $(id).textContent = text; }
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    }[c]));
+  }
+
+  function clearForm() {
+    $("productForm").reset();
+    $("productId").value = "";
+    $("formTitle").textContent = "Add a product";
+    $("saveBtn").textContent = "Save product";
+    message("formMsg", "");
+  }
+
+  $("clearBtn").onclick = clearForm;
+
+  $("loginBtn").onclick = async () => {
+    const email = $("email").value.trim();
+    const password = $("password").value;
+    if (!email || !password) {
+      message("loginMsg", "Enter your email and password.");
+      return;
+    }
+    $("loginBtn").disabled = true;
+    message("loginMsg", "Signing in...");
+    try {
+      const { error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        message("loginMsg", error.message);
+        return;
+      }
+      message("loginMsg", "");
+      await showDashboard();
+    } catch (err) {
+      message("loginMsg", "Could not connect: " + (err.message || String(err)));
+    } finally {
+      $("loginBtn").disabled = false;
+    }
+  };
+
+  $("logoutBtn").onclick = async () => {
+    await client.auth.signOut();
+    $("dashboard").classList.add("hidden");
+    $("loginBox").classList.remove("hidden");
+    message("loginMsg", "You have signed out.");
+  };
+
+  async function showDashboard() {
+    $("loginBox").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    await loadProducts();
+  }
+
+  async function loadProducts() {
+    $("productList").textContent = "Loading products...";
+    const { data, error } = await client.from("products").select("*").order("created_at", { ascending: false });
+    if (error) {
+      $("productList").textContent = "Could not load products: " + error.message;
+      return;
+    }
+    if (!data || data.length === 0) {
+      $("productList").textContent = "No products yet. Add your first product above.";
+      return;
+    }
+    $("productList").innerHTML = data.map(p => `
+      <div class="item">
+        <img src="${esc(p.image_url || "https://placehold.co/120x90?text=Product")}" alt="">
+        <div class="item-info">
+          <strong>${esc(p.name)}</strong>
+          <small>₹${Number(p.price).toLocaleString("en-IN")} · ${esc(p.condition || "")} · ${p.is_sold ? "Sold" : "Available"}</small>
+        </div>
+        <div class="actions">
+          <button class="btn gray" type="button" data-edit="${esc(p.id)}">Edit</button>
+          <button class="btn red" type="button" data-delete="${esc(p.id)}">Delete</button>
+        </div>
+      </div>`).join("");
+
+    document.querySelectorAll("[data-edit]").forEach(b => {
+      b.onclick = () => editProduct(data.find(p => String(p.id) === b.dataset.edit));
+    });
+    document.querySelectorAll("[data-delete]").forEach(b => {
+      b.onclick = () => deleteProduct(b.dataset.delete);
+    });
+  }
+
+  function editProduct(p) {
+    if (!p) return;
+    $("productId").value = p.id;
+    $("name").value = p.name || "";
+    $("category").value = p.category || "Laptop";
+    $("condition").value = p.condition || "Pre-owned";
+    $("price").value = p.price ?? "";
+    $("description").value = p.description || "";
+    $("isSold").checked = !!p.is_sold;
+    $("formTitle").textContent = "Edit product";
+    $("saveBtn").textContent = "Update product";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function deleteProduct(id) {
+    if (!confirm("Delete this product from the website?")) return;
+    const { error } = await client.from("products").delete().eq("id", id);
+    if (error) alert(error.message);
+    else await loadProducts();
+  }
+
+  $("productForm").onsubmit = async e => {
+    e.preventDefault();
+    $("saveBtn").disabled = true;
+    message("formMsg", "Saving product...");
+    try {
+      let image_url = null;
+      const file = $("photo").files[0];
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) throw new Error("Please choose an image smaller than 5 MB.");
+        const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+        const path = Date.now() + "-" + Math.random().toString(36).slice(2) + "." + ext;
+        const { error: uploadError } = await client.storage.from("product-images").upload(path, file, {
+          upsert: false, contentType: file.type
+        });
+        if (uploadError) throw uploadError;
+        image_url = client.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+      }
+
+      const product = {
+        name: $("name").value.trim(),
+        category: $("category").value,
+        condition: $("condition").value,
+        price: Number($("price").value),
+        description: $("description").value.trim(),
+        is_sold: $("isSold").checked
+      };
+      if (image_url) product.image_url = image_url;
+
+      const id = $("productId").value;
+      const result = id
+        ? await client.from("products").update(product).eq("id", id)
+        : await client.from("products").insert(product);
+
+      if (result.error) throw result.error;
+      clearForm();
+      message("formMsg", "Product saved successfully.");
+      await loadProducts();
+    } catch (err) {
+      message("formMsg", "Error: " + (err.message || String(err)));
+    } finally {
+      $("saveBtn").disabled = false;
+    }
+  };
+
+  // If a session already exists, reopen the dashboard automatically.
+  client.auth.getSession().then(({ data }) => {
+    if (data && data.session) showDashboard();
+  });
+</script>
+</body>
+</html>

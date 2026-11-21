@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitman E-Store — Technology, Elevated</title>
+<meta name="description" content="Shop laptops, computers and tablets at Pitman E-Store. Explore device sales, repairs and insurance enquiries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b12;--panel:#101621;--panel2:#141d2b;--white:#f6f8fc;--muted:#9aa7ba;--line:rgba(255,255,255,.10);--blue:#557cff;--cyan:#76d9ff;--lime:#c9ff5c;--max:1220px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font-family:"DM Sans",sans-serif;line-height:1.6}a{color:inherit;text-decoration:none}button{font:inherit}.wrap{width:min(var(--max),calc(100% - 48px));margin:auto}
+.announcement{background:var(--lime);color:#10150a;text-align:center;padding:8px 15px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+header{position:sticky;top:0;z-index:99;background:rgba(8,11,18,.86);backdrop-filter:blur(22px);border-bottom:1px solid var(--line)}
+.nav{height:82px;display:flex;align-items:center;justify-content:space-between;gap:25px}.brand{font:800 21px Manrope,sans-serif;letter-spacing:-1.1px}.brand em{font-style:normal;color:var(--lime)}.brand small{display:block;color:#7f8da2;font:700 8px "DM Sans";letter-spacing:.28em;margin-top:-3px}
+nav{display:flex;gap:32px;align-items:center}nav a{font-size:12px;color:#c2cad6;font-weight:700;transition:.2s}nav a:hover{color:var(--lime)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 21px;border-radius:7px;background:var(--lime);color:#11170b;font-size:12px;font-weight:900;letter-spacing:.02em;border:1px solid var(--lime);transition:.22s;cursor:pointer}.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(201,255,92,.18)}.btn.ghost{background:transparent;color:white;border-color:rgba(255,255,255,.3)}.btn.blue{background:var(--blue);border-color:var(--blue);color:white}.btn.small{padding:11px 16px}
+.hero{position:relative;min-height:680px;display:flex;align-items:center;overflow:hidden;background:#0a111d}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,17,.98) 0%,rgba(6,10,17,.91) 38%,rgba(6,10,17,.28) 100%),linear-gradient(0deg,#080b12 0%,transparent 30%),url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=2200&q=90") center/cover no-repeat;transform:scale(1.02)}
+.hero:after{content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(201,255,92,.17);border-radius:50%;right:-170px;top:70px;box-shadow:0 0 0 65px rgba(201,255,92,.025),0 0 0 130px rgba(201,255,92,.018);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:720px;padding:95px 0 120px}
+.kicker{display:flex;align-items:center;gap:12px;color:var(--lime);font-size:10px;font-weight:900;letter-spacing:.23em;text-transform:uppercase}.kicker:before{content:"";width:34px;height:1px;background:var(--lime)}
+h1,h2,h3,p{margin-top:0}h1{font:800 clamp(52px,7vw,92px)/.99 Manrope,sans-serif;letter-spacing:-.075em;margin:24px 0 24px}h1 span{color:var(--lime)}.hero-copy{max-width:540px;color:#c0cad8;font-size:16px;line-height:1.85}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}.hero-meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:48px;color:#aeb9c8;font-size:11px}.hero-meta b{color:#fff;font-size:13px;display:block}
+.stats{position:relative;margin-top:-44px;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);background:#111925;border:1px solid var(--line);border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.3)}.stat{padding:25px 30px;display:flex;gap:16px;align-items:center}.stat+.stat{border-left:1px solid var(--line)}.stat-icon{width:42px;height:42px;border:1px solid rgba(201,255,92,.25);border-radius:9px;display:grid;place-items:center;color:var(--lime);font-size:18px}.stat b{display:block;font:700 13px Manrope}.stat span{color:var(--muted);font-size:11px}
+section{padding:105px 0}.section-top{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:36px}.eyebrow{color:var(--lime);font-size:10px;letter-spacing:.22em;font-weight:900;text-transform:uppercase}.section-title{font:800 clamp(32px,4.4vw,52px)/1.08 Manrope,sans-serif;letter-spacing:-.06em;margin:12px 0 10px}.section-desc{color:var(--muted);font-size:14px;margin:0;max-width:550px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:27px}.filter{background:transparent;color:#aeb9c8;border:1px solid var(--line);border-radius:5px;padding:10px 17px;font-size:11px;font-weight:800;cursor:pointer}.filter.active,.filter:hover{background:var(--lime);border-color:var(--lime);color:#10170a}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}.product{background:#111925;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:.25s;display:flex;flex-direction:column}.product:hover{transform:translateY(-6px);border-color:rgba(201,255,92,.45);box-shadow:0 25px 55px rgba(0,0,0,.28)}.product-image{height:240px;background:#172232;overflow:hidden;position:relative}.product img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.product:hover img{transform:scale(1.06)}.product-body{padding:22px;display:flex;flex-direction:column;flex:1;gap:10px}.tag{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--lime);font-weight:900}.product h3{font:700 19px Manrope;margin:0}.spec{font-size:12px;line-height:1.7;color:var(--muted);min-height:35px}.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:9px}.price{font:800 23px Manrope;color:white}.sold{font-size:9px;font-weight:900;color:#ffb6b0;background:rgba(255,90,80,.12);padding:6px 9px;border-radius:4px}.product .btn{width:100%;margin-top:8px}.product .btn.light{background:transparent;border-color:var(--line);color:#fff}.empty{grid-column:1/-1;border:1px dashed rgba(255,255,255,.2);padding:50px;text-align:center;color:var(--muted);border-radius:10px}
+.services-section{background:#0d131e;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.service{padding:30px;background:linear-gradient(145deg,#151f2d,#0f1722);border:1px solid var(--line);border-radius:9px;min-height:230px;transition:.25s}.service:hover{border-color:rgba(201,255,92,.45);transform:translateY(-5px)}.service-icon{font-size:24px;color:var(--lime);margin-bottom:28px}.service h3{font:700 18px Manrope;margin-bottom:9px}.service p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
+.insurance{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:55px;background:linear-gradient(120deg,#17263b,#101a2b);border:1px solid rgba(118,217,255,.2);border-radius:12px;position:relative;overflow:hidden}.insurance:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(118,217,255,.16);right:-80px;top:-100px;box-shadow:0 0 0 40px rgba(118,217,255,.025),0 0 0 80px rgba(118,217,255,.02)}.insurance h2{font:800 clamp(32px,4vw,48px)/1.1 Manrope;letter-spacing:-.06em;margin:12px 0}.insurance p{color:#aebbd0;font-size:13px;line-height:1.8;max-width:580px}.insurance-art{position:relative;z-index:1;display:flex;justify-content:center;gap:18px;align-items:center;font-size:70px;filter:drop-shadow(0 15px 20px rgba(0,0,0,.25))}
+.contact{background:#070a10;border-top:1px solid var(--line)}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.contact-card{padding:32px;border:1px solid var(--line);border-radius:10px;background:#111925}.contact-card h3{font:700 22px Manrope}.contact-card p{font-size:13px;color:var(--muted);line-height:1.8}.contact-email{display:inline-block;color:var(--lime);font-weight:800;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+footer{border-top:1px solid var(--line);padding:25px 0;color:#778499;font-size:10px}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+@media(max-width:850px){nav{display:none}.hero{min-height:610px}.hero-bg{background-position:58% center}.stats{margin-top:20px}.stat{padding:20px}.products{grid-template-columns:repeat(2,minmax(0,1fr))}.insurance{grid-template-columns:1fr}.insurance-art{justify-content:flex-start}.contact-grid{gap:25px}}
+@media(max-width:580px){.wrap{width:calc(100% - 34px)}.nav{height:68px}.brand{font-size:18px}.nav>.btn{padding:10px 12px;font-size:10px}.announcement{font-size:9px}.hero{min-height:630px}.hero-bg{background-image:linear-gradient(90deg,rgba(6,10,17,.96),rgba(6,10,17,.72)),linear-gradient(0deg,#080b12 0%,transparent 50%),url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1100&q=85");background-position:58% center}.hero-content{padding:85px 0 95px}h1{font-size:55px}.hero-copy{font-size:14px}.hero-meta{gap:18px;margin-top:35px}.stats{grid-template-columns:1fr;margin-top:15px}.stat+.stat{border-left:0;border-top:1px solid var(--line)}.stat{padding:15px 19px}section{padding:72px 0}.section-top{align-items:flex-start;flex-direction:column}.products,.service-grid{grid-template-columns:1fr}.product-image{height:235px}.insurance{padding:29px 23px}.insurance-art{font-size:50px}.contact-grid{grid-template-columns:1fr}.contact-card{padding:24px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="announcement">PITMAN E-STORE &nbsp; / &nbsp; DEVICES • REPAIRS • SUPPORT</div>
+<header><div class="wrap nav">
+<a class="brand" href="#">PITMAN <em>E-STORE</em><small>TECHNOLOGY, ELEVATED</small></a>
+<nav><a href="#products">Products</a><a href="#services">Services</a><a href="#insurance">Insurance</a><a href="#contact">Contact</a></nav>
+<a class="btn small" id="topWhatsApp" href="#" target="_blank" rel="noopener">Talk to our team ↗️</a>
+</div></header>
+<main>
+<section class="hero">
+<div class="hero-bg"></div>
+<div class="wrap"><div class="hero-content">
+<div class="kicker">Your technology destination</div>
+<h1>Find your next<br><span>level.</span></h1>
+<p class="hero-copy">The right device changes everything. Explore new and pre-owned laptops, tablets and computers — backed by helpful service and support from Pitman E-Store.</p>
+<div class="hero-actions"><a class="btn" href="#products">Explore the collection ↗️</a><a class="btn ghost" href="#services">Discover our services</a></div>
+<div class="hero-meta"><div><b>01 / DEVICES</b>New & pre-owned technology</div><div><b>02 / SERVICE</b>Repair & technical support</div><div><b>03 / MORE</b>Vehicle insurance enquiries</div></div>
+</div></div>
+</section>
+<div class="wrap"><div class="stats">
+<div class="stat"><div class="stat-icon">⌘</div><div><b>Devices for every need</b><span>Explore available technology</span></div></div>
+<div class="stat"><div class="stat-icon">✳</div><div><b>Service & support</b><span>Help when you need it</span></div></div>
+<div class="stat"><div class="stat-icon">↗️</div><div><b>Easy enquiries</b><span>Connect directly with the store</span></div></div>
+</div></div>
+<section id="products"><div class="wrap">
+<div class="section-top"><div><div class="eyebrow">The collection</div><h2 class="section-title">Technology that<br>moves you forward.</h2><p class="section-desc">Browse the latest listings from Pitman E-Store. Find a device that fits your needs.</p></div><a class="btn ghost" href="#contact">Need help choosing? ↗️</a></div>
+<div class="filters" id="filters"><button class="filter active" data-category="All">All products</button><button class="filter" data-category="Laptop">Laptops</button><button class="filter" data-category="Tablet">Tablets</button><button class="filter" data-category="Computer">Computers</button></div>
+<div class="products" id="productsGrid"><div class="empty">Loading available products…</div></div>
+</div></section>
+<section class="services-section" id="services"><div class="wrap">
+<div class="section-top"><div><div class="eyebrow">Beyond the device</div><h2 class="section-title">More than just<br>a place to shop.</h2><p class="section-desc">From finding your next computer to keeping it running smoothly, we're here to help.</p></div></div>
+<div class="service-grid">
+<article class="service"><div class="service-icon">01&nbsp; / &nbsp;⌁</div><h3>Device sales</h3><p>Explore new and pre-owned laptops, tablets and desktop computers for study, work and everyday use.</p></article>
+<article class="service"><div class="service-icon">02&nbsp; / &nbsp;✳</div><h3>Repair & servicing</h3><p>Get in touch for laptop and computer troubleshooting, repair and servicing enquiries.</p></article>
+<article class="service"><div class="service-icon">03&nbsp; / &nbsp;↻</div><h3>Pre-owned technology</h3><p>Discover pre-owned devices and ask about condition, specifications and current availability.</p></article>
+</div></div></section>
+<section id="insurance"><div class="wrap"><div class="insurance">
+<div><div class="eyebrow">A little more peace of mind</div><h2>On the road?<br>We've got you.</h2><p>Ask Pitman E-Store about car and bike insurance options and the documents required to get started.</p><a class="btn blue" id="insuranceWhatsApp" href="#" target="_blank" rel="noopener">Enquire about insurance ↗️</a></div>
+<div class="insurance-art" aria-hidden="true"><span>🚘</span><span>🏍️</span></div>
+</div></div></section>
+<section class="contact" id="contact"><div class="wrap contact-grid">
+<div><div class="eyebrow">Let's talk</div><h2 class="section-title">Your next step<br>starts here.</h2><p class="section-desc">Questions about a product, repair or insurance? Reach out to the Pitman E-Store team.</p></div>
+<div class="contact-card"><div class="eyebrow">PITMAN E-STORE</div><h3>How can we help?</h3><p id="contactDetails">Email: <a class="contact-email" href="mailto:pitmanlogin@gmail.com">pitmanlogin@gmail.com</a></p><a class="btn blue" href="mailto:pitmanlogin@gmail.com?subject=Enquiry%20for%20Pitman%20E-Store">Email the store ↗️</a><br><br><a class="btn" id="contactWhatsApp" href="#" target="_blank" rel="noopener">Start a conversation ↗️</a></div>
+</div></section>
+</main>
+<footer><div class="wrap foot"><span>©️ <span id="year"></span> Pitman E-Store. All rights reserved.</span><span>Product details and availability are subject to confirmation.</span></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://nmslkdgmlifmvmhxhkyc.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_81WkoDIWyuF8_p1LDmyOiQ_MmgnM3kN";
+const STORE_WHATSAPP = "8493025535";
+const STORE_PHONE = "Add store phone number";
+const STORE_ADDRESS = "Add store address";
+const STORE_EMAIL = "pitmanlogin@gmail.com";
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("contactDetails").innerHTML = 'Email: <a class="contact-email" href="mailto:' + STORE_EMAIL + '">' + STORE_EMAIL + '</a>';
+const wa = "https://wa.me/" + STORE_WHATSAPP + "?text=";
+["topWhatsApp","insuranceWhatsApp","contactWhatsApp"].forEach(id=>{
+ const msg=id==="insuranceWhatsApp"?"Hello, I want to enquire about car/bike insurance.":"Hello, I want to enquire about Pitman E-Store.";
+ document.getElementById(id).href=wa+encodeURIComponent(msg);
+});
+let currentCategory="All",allProducts=[];
+const grid=document.getElementById("productsGrid");
+const money=n=>"₹"+Number(n||0).toLocaleString("en-IN");
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderProducts(){
+ const items=allProducts.filter(p=>currentCategory==="All"||p.category===currentCategory);
+ if(!items.length){grid.innerHTML='<div class="empty">No products are listed in this category yet. Contact the store for current availability.</div>';return;}
+ grid.innerHTML=items.map(p=>{
+  const image=p.image||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
+  const sold=Boolean(p.is_sold);
+  const enquiry="https://wa.me/"+STORE_WHATSAPP+"?text="+encodeURIComponent("Hello, I am enquiring about "+p.name);
+  return `<article class="product"><div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div><div class="product-body"><span class="tag">${escapeHtml(p.condition||"Device")} · ${escapeHtml(p.category||"")}</span><h3>${escapeHtml(p.name)}</h3><div class="spec">${escapeHtml(p.description||"")}</div><div class="price-row"><span class="price">${money(p.price)}</span>${sold?'<span class="sold">SOLD</span>':''}</div><a class="btn ${sold?'light':''}" ${sold?'aria-disabled="true" tabindex="-1"':`href="${enquiry}" target="_blank" rel="noopener"`}>${sold?"Currently sold":"Enquire on WhatsApp ↗️"}</a></div></article>`;
+ }).join("");
+}
+document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");currentCategory=b.dataset.category;renderProducts();
+}));
+async function loadProducts(){
+ if(!window.supabase){grid.innerHTML='<div class="empty">The product service could not load. Please refresh the page.</div>';return;}
+ const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+ const {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});
+ if(error){grid.innerHTML='<div class="empty">Products could not be loaded. Please check the database setup.</div>';console.error(error);return;}
+ allProducts=data||[];renderProducts();
+}
+loadProducts();
+</script>
+</body>
+</html>
