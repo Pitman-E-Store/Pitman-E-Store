@@ -103,21 +103,17 @@ const STORE_EMAIL = "pitmanlogin@gmail.com";
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Display all store contact details
 document.getElementById("contactDetails").innerHTML =
 'Email: <a class="contact-email" href="mailto:' + STORE_EMAIL + '">' + STORE_EMAIL + '</a><br><br>' +
 'Phone: <a class="contact-email" href="tel:+91' + STORE_PHONE + '">+91 ' + STORE_PHONE + '</a><br><br>' +
 'Store Address: ' + STORE_ADDRESS;
 
-// Email button
 document.getElementById("emailStoreButton").href =
 "mailto:" + STORE_EMAIL + "?subject=Enquiry%20for%20Pitman%20E-Store";
 
-// Call button
 document.getElementById("callStoreButton").href =
 "tel:+91" + STORE_PHONE;
 
-// WhatsApp buttons
 const wa = "https://wa.me/" + STORE_WHATSAPP + "?text=";
 ["topWhatsApp","insuranceWhatsApp","contactWhatsApp"].forEach(id=>{
  const msg=id==="insuranceWhatsApp"?"Hello, I want to enquire about car/bike insurance.":"Hello, I want to enquire about Pitman E-Store.";
@@ -148,6 +144,8 @@ function renderProducts(){
   const image=p.image_url||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
   const sold=Boolean(p.is_sold);
   const enquiry="https://wa.me/"+STORE_WHATSAPP+"?text="+encodeURIComponent("Hello, I am enquiring about "+p.name);
+  const hasPrice=p.price!==null && p.price!==undefined && String(p.price).trim()!=="" && Number(p.price)>0;
+  const priceDisplay=hasPrice?money(p.price):"Enquire for Price";
 
   return `<article class="product">
   <div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>
@@ -155,7 +153,7 @@ function renderProducts(){
   <span class="tag">${escapeHtml(p.condition||"Device")} · ${escapeHtml(p.category||"")}</span>
   <h3>${escapeHtml(p.name)}</h3>
   <div class="spec">${escapeHtml(p.description||"")}</div>
-  <div class="price-row"><span class="price">${money(p.price)}</span>${sold?'<span class="sold">SOLD</span>':''}</div>
+  <div class="price-row"><span class="price">${priceDisplay}</span>${sold?'<span class="sold">SOLD</span>':''}</div>
   <a class="btn ${sold?'light':''}" ${sold?'aria-disabled="true" tabindex="-1"':`href="${enquiry}" target="_blank" rel="noopener"`}>${sold?"Currently sold":"Enquire on WhatsApp ↗️"}</a>
   </div></article>`;
  }).join("");
