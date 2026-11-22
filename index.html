@@ -82,7 +82,12 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:#778499;font-size:1
 </div></div></section>
 <section class="contact" id="contact"><div class="wrap contact-grid">
 <div><div class="eyebrow">Let's talk</div><h2 class="section-title">Your next step<br>starts here.</h2><p class="section-desc">Questions about a product, repair or insurance? Reach out to the Pitman E-Store team.</p></div>
-<div class="contact-card"><div class="eyebrow">PITMAN E-STORE</div><h3>How can we help?</h3><p id="contactDetails">Email: <a class="contact-email" href="mailto:pitmanlogin@gmail.com">pitmanlogin@gmail.com</a></p><a class="btn blue" href="mailto:pitmanlogin@gmail.com?subject=Enquiry%20for%20Pitman%20E-Store">Email the store ↗️</a><br><br><a class="btn" id="contactWhatsApp" href="#" target="_blank" rel="noopener">Start a conversation ↗️</a></div>
+<div class="contact-card"><div class="eyebrow">PITMAN E-STORE</div><h3>How can we help?</h3>
+<p id="contactDetails">Loading store contact details...</p>
+<a class="btn blue" id="emailStoreButton" href="#">Email the store ↗️</a><br><br>
+<a class="btn" id="callStoreButton" href="#">Call the store ↗️</a><br><br>
+<a class="btn ghost" id="contactWhatsApp" href="#" target="_blank" rel="noopener">Start a conversation ↗️</a>
+</div>
 </div></section>
 </main>
 <footer><div class="wrap foot"><span>©️ <span id="year"></span> Pitman E-Store. All rights reserved.</span><span>Product details and availability are subject to confirmation.</span></div></footer>
@@ -90,56 +95,103 @@ footer{border-top:1px solid var(--line);padding:25px 0;color:#778499;font-size:1
 <script>
 const SUPABASE_URL = "https://nmslkdgmlifmvmhxhkyc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_81WkoDIWyuF8_p1LDmyOiQ_MmgnM3kN";
+
 const STORE_WHATSAPP = "8493025535";
 const STORE_PHONE = "9103313273";
-const STORE_ADDRESS = "Add store address";
+const STORE_ADDRESS = "Pulwama 192301";
 const STORE_EMAIL = "pitmanlogin@gmail.com";
+
 document.getElementById("year").textContent = new Date().getFullYear();
-document.getElementById("contactDetails").innerHTML = 'Email: <a class="contact-email" href="mailto:' + STORE_EMAIL + '">' + STORE_EMAIL + '</a>';
+
+// Display all store contact details
+document.getElementById("contactDetails").innerHTML =
+'Email: <a class="contact-email" href="mailto:' + STORE_EMAIL + '">' + STORE_EMAIL + '</a><br><br>' +
+'Phone: <a class="contact-email" href="tel:+91' + STORE_PHONE + '">+91 ' + STORE_PHONE + '</a><br><br>' +
+'Store Address: ' + STORE_ADDRESS;
+
+// Email button
+document.getElementById("emailStoreButton").href =
+"mailto:" + STORE_EMAIL + "?subject=Enquiry%20for%20Pitman%20E-Store";
+
+// Call button
+document.getElementById("callStoreButton").href =
+"tel:+91" + STORE_PHONE;
+
+// WhatsApp buttons
 const wa = "https://wa.me/" + STORE_WHATSAPP + "?text=";
 ["topWhatsApp","insuranceWhatsApp","contactWhatsApp"].forEach(id=>{
  const msg=id==="insuranceWhatsApp"?"Hello, I want to enquire about car/bike insurance.":"Hello, I want to enquire about Pitman E-Store.";
  document.getElementById(id).href=wa+encodeURIComponent(msg);
 });
+
 let currentCategory="All",allProducts=[],searchTerm="";
 const grid=document.getElementById("productsGrid");
 const money=n=>"₹"+Number(n||0).toLocaleString("en-IN");
-function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function escapeHtml(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
 function renderProducts(){
  const items=allProducts.filter(p=>{
   const matchesCategory=currentCategory==="All"||p.category===currentCategory;
   const matchesSearch=[p.name,p.category,p.description,p.condition].join(" ").toLowerCase().includes(searchTerm);
   return matchesCategory&&matchesSearch;
  });
+
  if(!items.length){
   grid.innerHTML='<div class="empty">'+(searchTerm?'No matching products found. Try another search.':'No products are listed in this category yet. Contact the store for current availability.')+'</div>';
   return;
  }
+
  grid.innerHTML=items.map(p=>{
   const image=p.image_url||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
   const sold=Boolean(p.is_sold);
   const enquiry="https://wa.me/"+STORE_WHATSAPP+"?text="+encodeURIComponent("Hello, I am enquiring about "+p.name);
-  return `<article class="product"><div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div><div class="product-body"><span class="tag">${escapeHtml(p.condition||"Device")} · ${escapeHtml(p.category||"")}</span><h3>${escapeHtml(p.name)}</h3><div class="spec">${escapeHtml(p.description||"")}</div><div class="price-row"><span class="price">${money(p.price)}</span>${sold?'<span class="sold">SOLD</span>':''}</div><a class="btn ${sold?'light':''}" ${sold?'aria-disabled="true" tabindex="-1"':`href="${enquiry}" target="_blank" rel="noopener"`}>${sold?"Currently sold":"Enquire on WhatsApp ↗️"}</a></div></article>`;
+
+  return `<article class="product">
+  <div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>
+  <div class="product-body">
+  <span class="tag">${escapeHtml(p.condition||"Device")} · ${escapeHtml(p.category||"")}</span>
+  <h3>${escapeHtml(p.name)}</h3>
+  <div class="spec">${escapeHtml(p.description||"")}</div>
+  <div class="price-row"><span class="price">${money(p.price)}</span>${sold?'<span class="sold">SOLD</span>':''}</div>
+  <a class="btn ${sold?'light':''}" ${sold?'aria-disabled="true" tabindex="-1"':`href="${enquiry}" target="_blank" rel="noopener"`}>${sold?"Currently sold":"Enquire on WhatsApp ↗️"}</a>
+  </div></article>`;
  }).join("");
 }
+
 document.getElementById("productSearch").addEventListener("input",e=>{
  searchTerm=e.target.value.trim().toLowerCase();
  renderProducts();
 });
+
 document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>{
  document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
  b.classList.add("active");
  currentCategory=b.dataset.category;
  renderProducts();
 }));
+
 async function loadProducts(){
- if(!window.supabase){grid.innerHTML='<div class="empty">The product service could not load. Please refresh the page.</div>';return;}
+ if(!window.supabase){
+  grid.innerHTML='<div class="empty">The product service could not load. Please refresh the page.</div>';
+  return;
+ }
+
  const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
  const {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});
- if(error){grid.innerHTML='<div class="empty">Products could not be loaded. Please check the database setup.</div>';console.error(error);return;}
+
+ if(error){
+  grid.innerHTML='<div class="empty">Products could not be loaded. Please check the database setup.</div>';
+  console.error(error);
+  return;
+ }
+
  allProducts=data||[];
  renderProducts();
 }
+
 loadProducts();
 </script>
 </body>
