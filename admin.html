@@ -65,7 +65,11 @@
           <div class="field"><label for="name">Product name *</label><input id="name" required placeholder="e.g. HP EliteBook 840"></div>
           <div class="field"><label for="category">Category *</label><select id="category"><option>Laptop</option><option>Tablet</option><option>Computer</option></select></div>
           <div class="field"><label for="condition">Condition</label><select id="condition"><option>New</option><option>Pre-owned</option></select></div>
-          <div class="field"><label for="price">Price in INR (₹) *</label><input id="price" type="number" min="0" step="1" required placeholder="25000"></div>
+          <div class="field">
+            <label for="price">Price in INR (₹) — Optional</label>
+            <input id="price" type="number" min="0" step="1" placeholder="Leave empty for Enquire for Price">
+            <p class="muted">Leave empty or enter 0 to display Enquire for Price.</p>
+          </div>
         </div>
         <div class="field"><label for="description">Specifications / description</label><textarea id="description" placeholder="Processor, RAM, storage, condition, warranty details..."></textarea></div>
         <div class="field"><label for="photo">Product photo</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><p class="muted">Choose a JPG, PNG or WebP image. Maximum size: 5 MB.</p></div>
@@ -80,8 +84,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // STEP: Replace only the two placeholder values below with your Supabase Project URL
-  // and your sb_publishable_... key. Do NOT use an sb_secret_... key here.
+  // Keep these values the same as the ones in index.html.
+  // Use the publishable key here, never an sb_secret_... key.
   const SUPABASE_URL = "https://nmslkdgmlifmvmhxhkyc.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_81WkoDIWyuF8_p1LDmyOiQ_MmgnM3kN";
 
@@ -93,6 +97,12 @@
     return String(s ?? "").replace(/[&<>"']/g, c => ({
       "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
     }[c]));
+  }
+
+  function priceLabel(price) {
+    const hasPrice = price !== null && price !== undefined &&
+      String(price).trim() !== "" && Number(price) > 0;
+    return hasPrice ? "₹" + Number(price).toLocaleString("en-IN") : "Enquire for Price";
   }
 
   function clearForm() {
@@ -158,7 +168,7 @@
        <img src="${esc(p.image_url || "https://placehold.co/120x90?text=Product")}" alt="">
         <div class="item-info">
           <strong>${esc(p.name)}</strong>
-          <small>₹${Number(p.price).toLocaleString("en-IN")} · ${esc(p.condition || "")} · ${p.is_sold ? "Sold" : "Available"}</small>
+          <small>${priceLabel(p.price)} · ${esc(p.condition || "")} · ${p.is_sold ? "Sold" : "Available"}</small>
         </div>
         <div class="actions">
           <button class="btn gray" type="button" data-edit="${esc(p.id)}">Edit</button>
@@ -197,6 +207,14 @@
 
   $("productForm").onsubmit = async e => {
     e.preventDefault();
+
+    const rawPrice = $("price").value.trim();
+    const numericPrice = rawPrice === "" ? null : Number(rawPrice);
+    if (numericPrice !== null && (!Number.isFinite(numericPrice) || numericPrice < 0)) {
+      message("formMsg", "Enter a valid price, 0, or leave the price empty.");
+      return;
+    }
+
     $("saveBtn").disabled = true;
     message("formMsg", "Saving product...");
     try {
@@ -217,7 +235,7 @@
         name: $("name").value.trim(),
         category: $("category").value,
         condition: $("condition").value,
-        price: Number($("price").value),
+        price: numericPrice,
         description: $("description").value.trim(),
         is_sold: $("isSold").checked
       };
