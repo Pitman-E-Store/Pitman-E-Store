@@ -141,24 +141,28 @@ function renderProducts(){
  }
 
  grid.innerHTML=items.map(p=>{
-  const image=p.image_url||"https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
-  const sold=Boolean(p.is_sold);
- const hasPrice = p.price !== null && p.price !== undefined && Number(p.price) > 0;
+  const image = p.image_url || "https://placehold.co/700x450/172232/e9efff?text=Pitman+E-Store";
+  const sold = Boolean(p.is_sold);
 
-const enquiryMessage =
-"Hello Pitman E-Store! I am interested in this product.\n\n" +
-"Product: " + p.name + "\n" +
-"Category: " + (p.category || "Not specified") + "\n" +
-"Condition: " + (p.condition || "Not specified") + "\n" +
-"Configuration: " + (p.description || "Not specified") + "\n" +
-"Price: " + (hasPrice ? money(p.price) : "Enquire for Price") + "\n" +
-"Product Image: " + (p.image_url || "Not available") + "\n\n" +
-"Please share more details and availability.";
+  const hasPrice = p.price !== null &&
+                   p.price !== undefined &&
+                   String(p.price).trim() !== "" &&
+                   Number(p.price) > 0;
 
-const enquiry = "https://wa.me/" + STORE_WHATSAPP +
-"?text=" + encodeURIComponent(enquiryMessage);
-  const hasPrice=p.price!==null && p.price!==undefined && String(p.price).trim()!=="" && Number(p.price)>0;
-  const priceDisplay=hasPrice?money(p.price):"Enquire for Price";
+  const priceDisplay = hasPrice ? money(p.price) : "Enquire for Price";
+
+  const enquiryMessage =
+    "Hello Pitman E-Store! I am interested in this product.\n\n" +
+    "Product: " + (p.name || "") + "\n" +
+    "Category: " + (p.category || "Not specified") + "\n" +
+    "Condition: " + (p.condition || "Not specified") + "\n" +
+    "Configuration: " + (p.description || "Not specified") + "\n" +
+    "Price: " + priceDisplay + "\n" +
+    "Product Image: " + (p.image_url || "Not available") + "\n\n" +
+    "Please share more details and availability.";
+
+  const enquiry = "https://wa.me/" + STORE_WHATSAPP +
+    "?text=" + encodeURIComponent(enquiryMessage);
 
   return `<article class="product">
   <div class="product-image"><img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>
